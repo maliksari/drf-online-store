@@ -16,11 +16,11 @@ urlpatterns = [
     path('products/<int:pk>/', product.ProductRetrieveUpdateDeleteView.as_view(),
          name='product-retrieve'),
     
-    path('cart/', cart.CreateCartView.as_view(),
-         name='create-cart'),
+#     path('cart/', cart.CreateCartView.as_view(),
+#          name='create-cart'),
     
-    path('cart/<int:pk>/', cart.CartAPIView.as_view(),
-         name='cart-retrieve'),
+#     path('cart/<int:pk>/', cart.CartAPIView.as_view(),
+#          name='cart-retrieve'),
 
 ]
 
