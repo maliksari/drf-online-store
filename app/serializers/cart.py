@@ -7,7 +7,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CartItem
-        fields = ['id', 'product_id', 'count']
+        fields = ['id', 'product_id', 'count','price']
 
     def create(self, validated_data):
         product_id = validated_data.pop('product_id')
@@ -18,8 +18,8 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer(serializers.ModelSerializer):
-    items = CartItemSerializer(many=True, read_only=True)
+    product = CartItemSerializer(many=False)
 
     class Meta:
         model = Cart
-        fields = ['id', 'user', 'total_price', 'items']
+        fields = ['user', 'total_price', 'product']

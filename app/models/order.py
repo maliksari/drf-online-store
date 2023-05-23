@@ -1,7 +1,7 @@
 from django.db import models
-from app.models import CustomUser, Cart
+from app.models import CustomUser, Cart,BaseModel
 
-class Order(models.Model):
+class Order(BaseModel):
     ORDER_STATUS_CHOICES = [
         ('PENDING', 'Pending'),
         ('SHIPPED', 'Shipped'),

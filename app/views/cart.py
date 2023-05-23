@@ -33,39 +33,39 @@ from app.serializers.order import OrderSerializer
 #         return Response(serializer.data)
 
 
-# class CreateCartView(APIView):
+class CreateCartView(APIView):
 
-#     @swagger_auto_schema(operation_description="Create Cart",
-#                          request_body=CartSerializer, tags=['Cart'])
-#     def post(self, request): 
-#         user = request.user
-#         if not user.is_authenticated:
-#             raise AuthenticationFailed('User must be authenticated')
+    @swagger_auto_schema(operation_description="Create Cart",
+                         request_body=CartSerializer, tags=['Cart'])
+    def post(self, request): 
+        user = request.user
+        if not user.is_authenticated:
+            raise AuthenticationFailed('User must be authenticated')
 
-#         product_id = request.data.get('product_id')
-#         quantity = request.data.get('quantity')
-#         if not product_id or not quantity:
-#             raise ValidationError('Product id and quantity are required')
+        product_id = request.data.get('product_id')
+        quantity = request.data.get('quantity')
+        if not product_id or not quantity:
+            raise ValidationError('Product id and quantity are required')
 
-#         try:
-#             product = Product.objects.get(id=product_id)
-#         except Product.DoesNotExist:
-#             raise NotFound('Product not found')
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            raise NotFound('Product not found')
 
-#         if not product.in_stock or product.amount_in_stock < quantity:
-#             raise ValidationError('Product is not in stock')
+        if not product.in_stock or product.amount_in_stock < quantity:
+            raise ValidationError('Product is not in stock')
 
-#         cart, created = Cart.objects.get_or_create(user=user)
+        cart, created = Cart.objects.get_or_create(user=user)
 
-#         cart_item, created = CartItem.objects.get_or_create(
-#             cart=cart, product=product)
+        cart_item, created = CartItem.objects.get_or_create(
+            cart=cart, product=product)
 
-#         cart_item.count += quantity
-#         cart_item.price = product.price * cart_item.count
-#         cart_item.save()
+        cart_item.count += quantity
+        cart_item.price = product.price * cart_item.count
+        cart_item.save()
 
-#         cart.total_price += cart_item.price
-#         cart.save()
+        cart.total_price += cart_item.price
+        cart.save()
 
-#         serializer = CartSerializer(cart)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = CartSerializer(cart)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
