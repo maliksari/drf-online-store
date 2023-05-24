@@ -80,16 +80,16 @@ WSGI_APPLICATION = 'common.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'online_store',
-        'USER': 'postgres',
-        'PASSWORD': '1905',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'online_store',
+#         'USER': 'postgres',
+#         'PASSWORD': '1905',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
