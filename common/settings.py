@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djongo',
+    'rest_framework_simplejwt',
     'rest_framework',
     'django_filters',
     'drf_yasg',
@@ -67,14 +69,25 @@ WSGI_APPLICATION = 'common.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'online_store',
+#         'HOST': 'localhost',
+#         'PORT': '27017',
+#         # 'USERNAME': '',
+#         # 'PASSWORD': '',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'online_store',
+        'USER': 'postgres',
+        'PASSWORD': '1905',
         'HOST': 'localhost',
-        'PORT': '27017',
-        # 'USERNAME': '',
-        # 'PASSWORD': '',
+        'PORT': '5432',
     }
 }
 
@@ -97,6 +110,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+
+}
+
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY
+}
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {

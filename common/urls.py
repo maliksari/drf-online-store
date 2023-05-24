@@ -17,7 +17,7 @@ from django.contrib import admin
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Django and Mongo db --> Online Store",
+        title="Django and PostgreSQL --> Online Store",
         default_version='v0.0.1',
         description="API Dökümantasyonu",
         terms_of_service="",
