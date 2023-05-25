@@ -19,8 +19,6 @@ class CreateCartView(Auth, APIView):
     @swagger_auto_schema(operation_description="Create Cart", request_body=CartSerializer, tags=['Cart'])
     def post(self, request):
         user = request.user
-        if not user.is_authenticated:
-            raise AuthenticationFailed('User must be authenticated')
 
         serializer = CartSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -28,7 +26,7 @@ class CreateCartView(Auth, APIView):
 
         cart_items_data = validated_data.pop('cart_items')
 
-        cart = Cart.objects.create(user=user, total_price=validated_data['total_price'])
+        cart = Cart.objects.create(user=user)
 
         total_price = 0
 
@@ -48,6 +46,7 @@ class CreateCartView(Auth, APIView):
             total_price += cart_item.price
 
         cart.total_price = total_price
+        print("---total",total_price,"***",cart_item.price)
         cart.save()
 
         return Response(serializer.data, status=201)
