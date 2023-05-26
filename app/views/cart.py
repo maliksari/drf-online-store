@@ -7,7 +7,7 @@ from rest_framework.exceptions import NotFound, ValidationError, AuthenticationF
 from decimal import Decimal
 
 from app.models import Cart, CartItem, Order, Product
-from app.serializers.cart import CartSerializer, CartItemSerializer
+from app.serializers.cart import CartItemSerializer,CartSerializer
 from app.serializers.order import OrderSerializer
 from .base import Auth
 
@@ -19,19 +19,27 @@ class CreateCartView(Auth, APIView):
     @swagger_auto_schema(operation_description="Create Cart", request_body=CartSerializer, tags=['Cart'])
     def post(self, request):
         user = request.user
-
+        data=request.data
         serializer = CartSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
 
-        cart_items_data = validated_data.pop('cart_items')
+        print("*****///",validated_data.get('cart_items'))
 
-        cart = Cart.objects.create(user=user)
+        cart = Cart.objects.filter(
+            user=user, is_active=True, is_completed=False).latest('created_on')
+
+        print("*****", cart.user, cart.pk, cart.is_completed)
+        #cart varmı yokmu
+        if cart is None:
+            cart = Cart.objects.create(user=user)
+
+        cart_items_data = data.get('cart_items')  
 
         total_price = 0
 
         for item_data in cart_items_data:
-            product_id = item_data['product'].id
+            product_id = item_data['product']
             quantity = item_data['count']
             product = Product.objects.get(id=product_id)
 
@@ -40,13 +48,18 @@ class CreateCartView(Auth, APIView):
 
             cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
             cart_item.count += quantity
-            cart_item.price = product.price * cart_item.count
+            cart_item.price = product.price * quantity
             cart_item.save()
 
             total_price += cart_item.price
 
         cart.total_price = total_price
         print("---total",total_price,"***",cart_item.price)
+        response = {
+            "total_price":total_price,
+            "products":CartItemSerializer(CartItem.objects.filter(cart=cart), many=True).data
+        }
+
         cart.save()
 
-        return Response(serializer.data, status=201)
+        return Response(response, status=201)
