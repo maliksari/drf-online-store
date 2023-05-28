@@ -15,6 +15,16 @@ class CartItemSerializer(serializers.ModelSerializer):
 class CartSerializer(serializers.Serializer):
     cart_items = CartItemSerializer(many=True)
 
-    # class Meta:
-    #     model = Cart
-    #     fields = ('cartitem_set',)
+
+
+class CartCompletedSerializer(serializers.Serializer):
+    is_completed = serializers.BooleanField(label="Sepeti onayla")
+
+
+class UserCartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ("id","name")
+
+class UserCartSerializer(serializers.ModelSerializer):
+    pass
