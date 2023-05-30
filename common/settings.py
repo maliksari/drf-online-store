@@ -67,19 +67,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'common.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'online_store',
-#         'HOST': 'localhost',
-#         'PORT': '27017',
-#         # 'USERNAME': '',
-#         # 'PASSWORD': '',
-#     }
-# }
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -113,7 +100,6 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 

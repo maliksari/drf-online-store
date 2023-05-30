@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from app.models import Cart, CartItem, Product
+from app.models import CartItem, Product
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -16,15 +16,5 @@ class CartSerializer(serializers.Serializer):
     cart_items = CartItemSerializer(many=True)
 
 
-
 class CartCompletedSerializer(serializers.Serializer):
     is_completed = serializers.BooleanField(label="Sepeti onayla")
-
-
-class UserCartItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CartItem
-        fields = ("id","name")
-
-class UserCartSerializer(serializers.ModelSerializer):
-    pass

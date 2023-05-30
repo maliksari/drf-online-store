@@ -9,5 +9,3 @@ class CustomUser(AbstractUser):
     )
 
     role = models.CharField(max_length=6, choices=ROLES)
-
-   

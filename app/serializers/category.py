@@ -10,7 +10,6 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-
 class CategoryProductSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True)
 

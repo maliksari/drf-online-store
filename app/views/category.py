@@ -4,7 +4,7 @@ from rest_framework import generics
 from rest_framework.exceptions import NotFound
 from rest_framework.viewsets import ModelViewSet
 
-from app.models import Category, Product
+from app.models import Category
 from app.serializers.category import CategoryProductSerializer, CategorySerializer
 
 # Get an instance of a logger

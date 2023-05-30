@@ -5,7 +5,7 @@ from .views import category, users, product, cart
 
 
 router = routers.DefaultRouter()
-# router.register(r'product', product.ProductView, basename='product')
+
 router.register(r'category', category.CategoryView, basename='category')
 
 urlpatterns = [
@@ -23,8 +23,8 @@ urlpatterns = [
     path('cart/<int:pk>/completed', cart.CartCopmletedView.as_view(),
          name='completed-cart'),
 
-    #     path('cart/<int:pk>/', cart.CartAPIView.as_view(),
-    #          name='cart-retrieve'),
+    path('user/<int:pk>/cart', users.UserCartAPIView.as_view(),
+              name='user-cart'),
 
 ]
 
