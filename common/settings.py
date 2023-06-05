@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'drf_yasg',
+    'celery',  
     # 'corsheaders',
     'app.apps.AppConfig',
 ]
@@ -104,6 +105,8 @@ REST_FRAMEWORK = {
     )
 
 }
+
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/rabbitmq'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",

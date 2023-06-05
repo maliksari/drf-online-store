@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics, status
+from rest_framework import status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
@@ -62,6 +62,7 @@ class ProductDetailView(APIView):
         try:
             product = Product.objects.get(pk=pk)
             product.delete()
+            delete_cache(self.CACHE_KEY_PREFIX)
             return Response({"message": "Success"}, status=status.HTTP_200_OK)
         except Product.DoesNotExist:
             return Response({"message": "Product not found"}, status=status.HTTP_404_NOT_FOUND)
