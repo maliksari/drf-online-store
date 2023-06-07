@@ -76,12 +76,11 @@ class CartCopmletedView(Auth, APIView):
 
         if serializer.is_valid():
             cart.is_completed = data['is_completed']
-            if cart.is_completed:
-                cart_items = CartItem.objects.filter(cart=cart, is_active=True)
-                for cart_item in cart_items:
-                    product = cart_item.product
-                    product.amount_in_stock -= cart_item.count
-                    product.save()
+            cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+            for cart_item in cart_items:
+                product = cart_item.product
+                product.amount_in_stock -= cart_item.count
+                product.save()
             cart.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
 

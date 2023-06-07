@@ -2,6 +2,7 @@ from django.urls import path
 from rest_framework import routers
 
 from .views import category, users, product, cart, redis_test
+from .test_view import test_celery
 
 
 router = routers.DefaultRouter()
@@ -25,7 +26,8 @@ urlpatterns = [
 
     path('user/<int:pk>/cart', users.UserCartAPIView.as_view(),
          name='user-cart'),
-    path('redis', redis_test.RedisView.as_view(), name="redis")
+    path('redis', redis_test.RedisView.as_view(), name="redis"),
+    path('rabbit/test', test_celery, name="rabbitmq")
 
 ]
 
