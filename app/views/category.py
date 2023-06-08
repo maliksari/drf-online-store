@@ -28,46 +28,54 @@ class CategoryView(ModelViewSet):
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
-    @swagger_auto_schema(operation_description="Category cerate", request_body=CategorySerializer,tags=['Category'])
+    @swagger_auto_schema(operation_description="Category cerate", request_body=CategorySerializer, tags=['Category'])
     def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        delete_cache(self.CACHE_KEY_PREFIX)
-        delete_cache("categories-product")
-        return response
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(created_by=request.user)
+        return Response(serializer.data)
+       
 
-    @swagger_auto_schema(operation_description="Category delete",tags=['Category'])
+    @swagger_auto_schema(operation_description="Category delete", tags=['Category'])
     def destroy(self, request, *args, **kwargs):
         response = super().destroy(request, *args, **kwargs)
         delete_cache(self.CACHE_KEY_PREFIX)
         return response
-    
-    @swagger_auto_schema(operation_description="Category patch",tags=['Category'])
+
+    @swagger_auto_schema(operation_description="Category patch", tags=['Category'])
     def partial_update(self, request, *args, **kwargs):
+        category = Category.objects.get(id=kwargs.get('pk'))
+        category.modified_by=request.user
+        category.save()
         response = super().partial_update(request, *args, **kwargs)
         delete_cache(self.CACHE_KEY_PREFIX)
         return response
-    
-    @swagger_auto_schema(operation_description="Category get",tags=['Category'])
-    @method_decorator(cache_page(300, key_prefix=f"{CACHE_KEY_PREFIX}:id"))
+
+    @swagger_auto_schema(operation_description="Category get", tags=['Category'])
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
-    
-    @swagger_auto_schema(operation_description="Category put",tags=['Category'])
+
+    @swagger_auto_schema(operation_description="Category put", tags=['Category'])
     def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        category_instance = Category.objects.get(id=response.data.get('id'))
+        category_instance.modified_by=request.user
+        category_instance.save()
         delete_cache(self.CACHE_KEY_PREFIX)
-        return super().update(request, *args, **kwargs)
-    
+        return response
+
 
 class CategoryProductsAPIView(generics.RetrieveAPIView):
     serializer_class = CategoryProductSerializer
     lookup_field = 'id'
     CACHE_KEY_PREFIX = "categories-product"
 
-    @swagger_auto_schema(operation_description="Category Products",tags=['Category'])
+    @swagger_auto_schema(operation_description="Category Products", tags=['Category'])
     @method_decorator(cache_page(300, key_prefix=CACHE_KEY_PREFIX))
     def get(self, request, category_id):
         try:
-            category = Category.objects.prefetch_related('products').get(id=category_id)
+            category = Category.objects.prefetch_related(
+                'products').get(id=category_id)
             serializer = self.serializer_class(category)
             return Response(serializer.data)
         except Category.DoesNotExist:

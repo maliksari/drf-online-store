@@ -26,7 +26,7 @@ class CreateCartView(Auth, APIView):
             user=user, is_active=True, is_completed=False).last()
 
         if cart is None:
-            cart = Cart.objects.create(user=user)
+            cart = Cart.objects.create(user=user,created_by=user)
 
         cart_items_data = data.get('cart_items')
         total_price = 0
@@ -40,7 +40,7 @@ class CreateCartView(Auth, APIView):
                 raise ValidationError('Product is not in stock')
 
             cart_item, created = CartItem.objects.get_or_create(
-                cart=cart, product=product)
+                cart=cart, product=product,created_by=user)
             cart_item.count += quantity
             cart_item.price = product.price * quantity
             cart_item.save()

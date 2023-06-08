@@ -11,7 +11,8 @@ class BaseModel(models.Model):
         null=True,
         help_text='Oluşturan',
         on_delete=models.SET_NULL,
-        related_name='%(app_label)s_%(class)s_cby'
+        related_name='%(app_label)s_%(class)s_cby',
+        editable=False
     )
 
     modified_on = models.DateTimeField(
@@ -23,7 +24,8 @@ class BaseModel(models.Model):
         null=True,
         help_text='Güncelleyen',
         on_delete=models.SET_NULL,
-        related_name='%(app_label)s_%(class)s_mby'
+        related_name='%(app_label)s_%(class)s_mby',
+        editable=False
     )
     is_active = models.BooleanField(null=False, blank=False, default=True)
 
