@@ -10,6 +10,7 @@ class Cart(BaseModel):
     is_completed = models.BooleanField(default=False)
 
     class Meta:
+        db_table = 'carts'
         get_latest_by = 'created_on'
 
 
@@ -18,3 +19,7 @@ class CartItem(BaseModel):
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     count = models.PositiveIntegerField(default=0)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
+
+    class Meta:
+        db_table = 'cart_items'

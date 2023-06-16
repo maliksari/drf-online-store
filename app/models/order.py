@@ -18,3 +18,4 @@ class Order(BaseModel):
 
     class Meta:
         ordering = ['-id']
+        db_table = 'orders'
