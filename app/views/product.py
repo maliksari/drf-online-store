@@ -5,6 +5,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 from app.models import Product
@@ -15,6 +16,7 @@ from common.utils import delete_cache
 class ProductView(APIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    parser_classes = (FormParser, MultiPartParser)
 
     CACHE_KEY_PREFIX = "products-view"
 

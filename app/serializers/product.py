@@ -7,10 +7,11 @@ from app.models import Product, Category
 class ProductCreateSerializer(serializers.ModelSerializer):
     categories = serializers.PrimaryKeyRelatedField(
         many=True, queryset=Category.objects.all())
+    image = serializers.ImageField(required=False)
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'amount_in_stock',
+        fields = ['id', 'name', 'product_code', 'description', 'image','amount_in_stock',
                   'price', 'in_stock', 'categories']
 
     def create(self, validated_data):
@@ -29,4 +30,5 @@ class ProductCreateSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'name', 'amount_in_stock', 'price', 'in_stock')
+        fields = ('id', 'name', 'product_code', 'description','image',
+                  'amount_in_stock', 'price', 'in_stock')
